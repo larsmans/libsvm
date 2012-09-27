@@ -89,7 +89,7 @@ int main(int argc,char **argv)
 		exit(1);
 	}
 
-	line = (char *) malloc(max_line_len*sizeof(char));
+	line = malloc(max_line_len);
 
 #define SKIP_TARGET\
 	while(isspace(*p)) ++p;\
@@ -146,8 +146,8 @@ int main(int argc,char **argv)
 	}
 	rewind(fp);
 	
-	feature_max = (double *)malloc((max_index+1)* sizeof(double));
-	feature_min = (double *)malloc((max_index+1)* sizeof(double));
+	feature_max = malloc((max_index + 1) * sizeof(double));
+	feature_min = malloc((max_index + 1) * sizeof(double));
 	
 	if(feature_max == NULL || feature_min == NULL)
 	{
@@ -308,7 +308,7 @@ char* readline(FILE *input)
 	while(strrchr(line,'\n') == NULL)
 	{
 		max_line_len *= 2;
-		line = (char *) realloc(line, max_line_len);
+		line = realloc(line, max_line_len);
 		len = (int) strlen(line);
 		if(fgets(line+len,max_line_len-len,input) == NULL)
 			break;

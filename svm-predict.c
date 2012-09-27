@@ -24,7 +24,7 @@ static char* readline(FILE *input)
 	while(strrchr(line,'\n') == NULL)
 	{
 		max_line_len *= 2;
-		line = (char *) realloc(line,max_line_len);
+		line = realloc(line,max_line_len);
 		len = (int) strlen(line);
 		if(fgets(line+len,max_line_len-len,input) == NULL)
 			break;
@@ -56,9 +56,9 @@ void predict(FILE *input, FILE *output)
 			printf("Prob. model for test data: target value = predicted value + z,\nz: Laplace distribution e^(-|z|/sigma)/(2sigma),sigma=%g\n",svm_get_svr_probability(model));
 		else
 		{
-			int *labels=(int *) malloc(nr_class*sizeof(int));
+			int *labels = malloc(nr_class * sizeof(int));
 			svm_get_labels(model,labels);
-			prob_estimates = (double *) malloc(nr_class*sizeof(double));
+			prob_estimates = malloc(nr_class * sizeof(double));
 			fprintf(output,"labels");		
 			for(j=0;j<nr_class;j++)
 				fprintf(output," %d",labels[j]);
@@ -68,7 +68,7 @@ void predict(FILE *input, FILE *output)
 	}
 
 	max_line_len = 1024;
-	line = (char *)malloc(max_line_len*sizeof(char));
+	line = malloc(max_line_len);
 	while(readline(input) != NULL)
 	{
 		int i = 0;
@@ -89,7 +89,7 @@ void predict(FILE *input, FILE *output)
 			if(i>=max_nr_attr-1)	// need one more for index = -1
 			{
 				max_nr_attr *= 2;
-				x = (struct svm_node *) realloc(x,max_nr_attr*sizeof(struct svm_node));
+				x = realloc(x,max_nr_attr*sizeof(struct svm_node));
 			}
 
 			idx = strtok(NULL,":");
@@ -205,7 +205,7 @@ int main(int argc, char **argv)
 		exit(1);
 	}
 
-	x = (struct svm_node *) malloc(max_nr_attr*sizeof(struct svm_node));
+	x = malloc(max_nr_attr * sizeof(struct svm_node));
 	if(predict_probability)
 	{
 		if(svm_check_probability_model(model)==0)

@@ -4,7 +4,7 @@
 #include <ctype.h>
 #include <errno.h>
 #include "svm.h"
-#define Malloc(type,n) (type *)malloc((n)*sizeof(type))
+#define Malloc(type,n) malloc((n) * sizeof(type))
 
 void print_null(const char *s) {}
 
@@ -72,7 +72,7 @@ static char* readline(FILE *input)
 	while(strrchr(line,'\n') == NULL)
 	{
 		max_line_len *= 2;
-		line = (char *) realloc(line,max_line_len);
+		line = realloc(line,max_line_len);
 		len = (int) strlen(line);
 		if(fgets(line+len,max_line_len-len,input) == NULL)
 			break;
@@ -240,8 +240,8 @@ void parse_command_line(int argc, char **argv, char *input_file_name, char *mode
 				break;
 			case 'w':
 				++param.nr_weight;
-				param.weight_label = (int *)realloc(param.weight_label,sizeof(int)*param.nr_weight);
-				param.weight = (double *)realloc(param.weight,sizeof(double)*param.nr_weight);
+				param.weight_label = realloc(param.weight_label,sizeof(int)*param.nr_weight);
+				param.weight = realloc(param.weight,sizeof(double)*param.nr_weight);
 				param.weight_label[param.nr_weight-1] = atoi(&argv[i-1][2]);
 				param.weight[param.nr_weight-1] = atof(argv[i]);
 				break;
