@@ -1,3 +1,4 @@
+#include <cmath>
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -7,7 +8,9 @@
 #include <stdarg.h>
 #include <limits.h>
 #include <locale.h>
+
 #include "svm.h"
+
 int libsvm_version = LIBSVM_VERSION;
 typedef float Qfloat;
 typedef signed char schar;
@@ -23,17 +26,7 @@ template <class S, class T> static inline void clone(T*& dst, S* src, int n)
 	dst = new T[n];
 	memcpy((void *)dst,(void *)src,sizeof(T)*n);
 }
-static inline double powi(double base, int times)
-{
-	double tmp = base, ret = 1.0;
 
-	for(int t=times; t>0; t/=2)
-	{
-		if(t%2==1) ret*=tmp;
-		tmp = tmp * tmp;
-	}
-	return ret;
-}
 #define INF HUGE_VAL
 #define TAU 1e-12
 #define Malloc(type,n) (type *)malloc((n)*sizeof(type))
@@ -234,7 +227,7 @@ private:
 	}
 	double kernel_poly(int i, int j) const
 	{
-		return powi(gamma*dot(x[i],x[j])+coef0,degree);
+		return std::pow(gamma*dot(x[i],x[j])+coef0,degree);
 	}
 	double kernel_rbf(int i, int j) const
 	{
@@ -321,7 +314,7 @@ double Kernel::k_function(const svm_node *x, const svm_node *y,
 		case LINEAR:
 			return dot(x,y);
 		case POLY:
-			return powi(param.gamma*dot(x,y)+param.coef0,param.degree);
+			return std::pow(param.gamma*dot(x,y)+param.coef0,param.degree);
 		case RBF:
 		{
 			double sum = 0;
